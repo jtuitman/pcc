@@ -219,7 +219,7 @@ xpforx:=function(f,xp,r,m);
   xppow[1]:=R!1;
   xppow[2]:=push_to_R(xp,R);
   for i:=2 to degxf do
-    xppow:=Append(xppow,radix_reduce(xppow[i]*xppow[2],r,m));
+    Append(~xppow,radix_reduce(xppow[i]*xppow[2],r,m));
   end for;
 
   // Substitute x^p into f(-,y).
@@ -319,7 +319,7 @@ froblift:=function(Q,p,n,m,N,r,Delta,s,W0);
   prec:=[];
   k:=N;
   while k gt 1 do
-    prec:=Append(prec,k);
+    Append(~prec,k);
     k:=Ceiling(k/2);
   end while;
   prec:=Reverse(prec);

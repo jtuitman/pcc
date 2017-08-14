@@ -246,7 +246,7 @@ inv_Ki:=function(f,p,n,m,N);
   for i:=1 to #C do
     for j:=1 to n do
       if C[i][j] ne 0 then
-        valset:=Append(valset,Valuation(C[i][j],p));
+        Append(~valset,Valuation(C[i][j],p));
       end if;
     end for;
   end for;
@@ -283,13 +283,13 @@ inv_Ki:=function(f,p,n,m,N);
   for i:=1 to #C do
     D:=Eltseq(C[i]);
     for j:=1 to #D do
-      inv:=inv+(Z!D[j])*(K.1)^(j-1)*(Parent(f).1)^(i-1);
+      inv:=inv+(IntegerRing()!D[j])*(K.1)^(j-1)*(Parent(f).1)^(i-1);
     end for;
   end for;
   
   prec:=[];
   while N gt 1 do
-    prec:=Append(prec,N);
+    Append(~prec,N);
     N:=Ceiling(N/2);
   end while;
   prec:=Reverse(prec);
@@ -332,7 +332,7 @@ red_lists:=function(Q,p,n,m,N,r,W0,Winf,G0,Ginf,e0,einf,J0,Jinf,T0,Tinf,T0inv,Ti
     redlistfinKi:=[];
 
     ri:=fac[i][1];
-    riseq:=Append(riseq,ri);
+    Append(~riseq,ri);
 
     if Degree(ri) eq 1 then
       D:=J0[i];
@@ -348,7 +348,7 @@ red_lists:=function(Q,p,n,m,N,r,W0,Winf,G0,Ginf,e0,einf,J0,Jinf,T0,Tinf,T0inv,Ti
         mat:=reduce_mod_pN_K_mat(mat,p,Nw);
         mat:=denominv*mat;
         mat:=reduce_mod_pN_K_mat(mat,p,Nw);
-        redlistfinKi:=Append(redlistfinKi,mat);
+        Append(~redlistfinKi,mat);
       end for;  
     else
       Ki:=ext<K|ri>;
@@ -369,10 +369,10 @@ red_lists:=function(Q,p,n,m,N,r,W0,Winf,G0,Ginf,e0,einf,J0,Jinf,T0,Tinf,T0inv,Ti
         mat:=reduce_mod_pN_Ki_mat(mat,p,Nw);
         mat:=denominv*mat;
         mat:=reduce_mod_pN_Ki_mat(mat,p,Nw);
-        redlistfinKi:=Append(redlistfinKi,mat);
+        Append(~redlistfinKi,mat);
       end for;
     end if;
-    redlistfinfac:=Append(redlistfinfac,redlistfinKi);
+    Append(~redlistfinfac,redlistfinKi);
   end for;
 
   rK0:=reduce_mod_pN_Kx(rK,p,Nw);
@@ -387,7 +387,7 @@ red_lists:=function(Q,p,n,m,N,r,W0,Winf,G0,Ginf,e0,einf,J0,Jinf,T0,Tinf,T0inv,Ti
         fiseq[k]:=Kx!0;
       end if;   
     end for;
-    L:=Append(L,reduce_mod_pN_Kx(ChineseRemainderTheorem(fiseq,riseq),p,Nw));
+    Append(~L,reduce_mod_pN_Kx(ChineseRemainderTheorem(fiseq,riseq),p,Nw));
   end for;
 
   redlistfin:=[];
@@ -406,7 +406,7 @@ red_lists:=function(Q,p,n,m,N,r,W0,Winf,G0,Ginf,e0,einf,J0,Jinf,T0,Tinf,T0inv,Ti
         mat[i,j]:=reduce_mod_pN_Kx(entry,p,Nw);
       end for;
     end for;
-    redlistfin:=Append(redlistfin,mat);
+    Append(~redlistfin,mat);
   end for;
 
   // Infinite reduction matrices
@@ -423,7 +423,7 @@ red_lists:=function(Q,p,n,m,N,r,W0,Winf,G0,Ginf,e0,einf,J0,Jinf,T0,Tinf,T0inv,Ti
     D:=D-IdentityMatrix(K,d);
     mat:=Pinv*D^(-1)*P;
     mat:=reduce_mod_pN_K_mat(mat,p,Nw);
-    redlistinf:=Append(redlistinf,mat);
+    Append(~redlistinf,mat);
   end for;
 
   return redlistfin,redlistinf;
@@ -443,7 +443,7 @@ convert_to_Kxzzinvd:=function(w,Q,Kx);
     D,val:=Coefficients(w[i]);
     E:=[];
     for j:=1 to #D do
-      E[j]:=Zax_to_Kx(Zax!Coefficients(D[j]),Kx); 
+      E[j]:=Zax_to_Kx(PolynomialRing(PolynomialRing(IntegerRing()))!Coefficients(D[j]),Kx); 
     end for;
     C[i]:=z^(-1)*(Kxz.1)^(val+1)*(Kxz!E); 
   end for;
@@ -509,7 +509,7 @@ coho_red_fin:=function(w,Q,p,N,r,G0,redlistfin,Kx);
     for j:=-l0 to 0 do
       vec[j+l0+1]:=Coefficient(w[i],j);  
     end for;
-    wcoefs:=Append(wcoefs,vec);
+    Append(~wcoefs,vec);
   end for;
 
   l:=l0;
@@ -674,8 +674,8 @@ coho_red_inf:=function(w,Q,p,N,r,W0,Winf,Ginf,redlistinf,Kx);
   deglist:=[0];
   for i:=1 to d do
     if w[i] ne 0 then
-      vallist:=Append(vallist,Valuation(w[i]));
-      deglist:=Append(deglist,Degree(w[i]));
+      Append(~vallist,Valuation(w[i]));
+      Append(~deglist,Degree(w[i]));
     end if;
   end for;
 
@@ -688,7 +688,7 @@ coho_red_inf:=function(w,Q,p,N,r,W0,Winf,Ginf,redlistinf,Kx);
     for j:=valw to degw do
       vec[j-valw+1]:=Coefficient(w[i],j);  
     end for;
-    wcoefs:=Append(wcoefs,vec);
+    Append(~wcoefs,vec);
   end for;
 
   m0:=-valw-degr+1;

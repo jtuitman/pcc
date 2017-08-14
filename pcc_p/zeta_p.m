@@ -7,7 +7,7 @@
 
 provable_prec:=function(Q,p,g,W0,Winf,e0,einf:val:=0);
 
-  // Compute the p-adic precision required for provable correctness
+  // Compute the p-adic precision required for provable correctness.
 
   d:=Degree(Q);
   W:=Winf*W0^(-1);
@@ -15,7 +15,7 @@ provable_prec:=function(Q,p,g,W0,Winf,e0,einf:val:=0);
   prec_list:=[];
   prec_list[1]:=1;
   for i:=1 to g do
-    prec_list:=Append(prec_list,Floor(log(p,(4*g/i)*p^(i/2)))+1);
+    Append(~prec_list,Floor(log(p,(4*g/i)*p^(i/2)))+1);
   end for;
   N_chi:=Maximum(prec_list);
   
@@ -58,11 +58,11 @@ frobmatrix:=function(Q,p,N,r,W0,Winf,G0,Ginf,frobmatb0r,redlistfin,redlistinf,ba
     T:=[];
     for k:=1 to d do
       for j:=0 to degr-ord0W-ordinfW-2 do
-        T:=Append(T,Coefficient(im[1,k],j));
+        Append(~T,Coefficient(im[1,k],j));
       end for;
     end for;
 
-    L:=Append(L,T);
+    Append(~L,T);
 
     if verbose then
       printf ".";
@@ -88,7 +88,7 @@ revcharpoly:=function(Fp,p);
   // using the Newton-Girard identities.
 
   g:=NumberOfRows(Fp) div 2;
-  chi:=Reverse(Coefficients(Zx!CharacteristicPolynomial(Fp))); 
+  chi:=Reverse(Coefficients(PolynomialRing(IntegerRing())!CharacteristicPolynomial(Fp))); 
   chi[1]:=1;
   s:=[];
   s[1]:=2*g;
@@ -109,7 +109,7 @@ revcharpoly:=function(Fp,p);
   for i:=g+1 to 2*g do
     chi[i+1]:=chi[2*g+1-i]*p^(i-g);
   end for;
-  return Zx!chi;
+  return PolynomialRing(IntegerRing())!chi;
 end function;
 
 
@@ -125,7 +125,7 @@ norminvroots:=function(f)
   for i:=1 to #facf do
     rootlist:=Roots(Cx!facf[i][1]); 
     for i:=1 to #rootlist do
-      normlist:=Append(normlist,Norm(1/rootlist[i][1]));
+      Append(~normlist,Norm(1/rootlist[i][1]));
     end for;
   end for;
   return normlist;
@@ -134,20 +134,14 @@ end function;
 
 test_num_zeta:=function(chi,q)
 
-  // Test whether the integer polynomial chi has roots of absolute value q^(-1/2)
+  // Test whether the integer polynomial chi has roots of absolute value q^(-1/2).
 
   QT:=PolynomialRing(RationalField());
  
   f:=Evaluate(chi,QT.1)*Evaluate(chi,-QT.1);
- 
-  g:=QT!0;
-  for i:=0 to Degree(chi) do
-    g:=g+Coefficient(f,2*i)*QT.1^i;
-  end for;
-
+  g:=QT![Coefficient(f,2*i):i in [0..Degree(chi)]];
   g:=Evaluate(g,(QT.1)/q);
 
   return HasAllRootsOnUnitCircle(g);
 
 end function;
-

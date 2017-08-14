@@ -15,7 +15,7 @@ provable_prec:=function(Q,p,n,g,W0,Winf,e0,einf:val:=0);
   prec_list:=[];
   prec_list[1]:=1;
   for i:=1 to g do
-    prec_list:=Append(prec_list,Floor(log(p,(4*g/i)*p^(n*i/2)))+1);
+    Append(~prec_list,Floor(log(p,(4*g/i)*p^(n*i/2)))+1);
   end for;
   N_chi:=Maximum(prec_list);
   
@@ -57,11 +57,11 @@ frobmatrix:=function(Q,p,n,m,N,r,W0,Winf,G0,Ginf,frobmatb0r,redlistfin,redlistin
     T:=[];
     for k:=1 to d do
       for j:=0 to degr-ord0W-ordinfW-2 do
-        T:=Append(T,Coefficient(im[1,k],j));
+        Append(~T,Coefficient(im[1,k],j));
       end for;
     end for;
 
-    L:=Append(L,T);
+    Append(~L,T);
 
     if verbose then
       printf ".";
@@ -187,13 +187,13 @@ norminvroots:=function(f)
   // roots of the integer polynomial f (to test whether it is a Weil polynomial).
 
   facf:=Factorization(f);
-  C:=ComplexField(100); // What is enough precision here?
+  C:=ComplexField(100); 
   Cx:=PolynomialRing(C);
   normlist:=[];
   for i:=1 to #facf do
     rootlist:=Roots(Cx!facf[i][1]);
     for j:=1 to #rootlist do
-      normlist:=Append(normlist,Norm(1/rootlist[j][1]));
+      Append(~normlist,Norm(1/rootlist[j][1]));
     end for;
   end for;
   return normlist;
@@ -207,12 +207,7 @@ test_num_zeta:=function(chi,q)
   QT:=PolynomialRing(RationalField());
  
   f:=Evaluate(chi,QT.1)*Evaluate(chi,-QT.1);
- 
-  g:=QT!0;
-  for i:=0 to Degree(chi) do
-    g:=g+Coefficient(f,2*i)*QT.1^i;
-  end for;
-
+  g:= QT! [Coefficient(f,2*i) : i in [0..Degree(chi)]];
   g:=Evaluate(g,(QT.1)/q);
 
   return HasAllRootsOnUnitCircle(g);

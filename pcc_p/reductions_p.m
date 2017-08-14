@@ -17,7 +17,7 @@ reduce_mod_pN_Q:=function(f,p,N);
       m:=p^(N-ord);
       Zmodm:=IntegerRing(m);
       unit:=f/(p^ord);
-      f:=Z!((Zmodm!Numerator(unit))/(Zmodm!Denominator(unit)));
+      f:=IntegerRing()!((Zmodm!Numerator(unit))/(Zmodm!Denominator(unit)));
       if 2*f ge m then
         f:=f-m;
       end if;
@@ -188,7 +188,7 @@ inv_Qi:=function(f,p,N);
   valset:=[];
   for i:=1 to #C do
     if C[i] ne 0 then
-      valset:=Append(valset,Valuation(C[i],p));
+      Append(~valset,Valuation(C[i],p));
     end if;
   end for; 
   val:=Minimum(valset);
@@ -217,12 +217,12 @@ inv_Qi:=function(f,p,N);
   inv:=Qi!0;
   C:=Coefficients(invmodp);
   for i:=1 to #C do
-    inv:=inv+(Z!C[i])*(Qi.1)^(i-1);
+    inv:=inv+(IntegerRing()!C[i])*(Qi.1)^(i-1);
   end for;
   
   prec:=[];
   while N gt 1 do
-    prec:=Append(prec,N);
+    Append(~prec,N);
     N:=Ceiling(N/2);
   end while;
   prec:=Reverse(prec);
@@ -283,7 +283,7 @@ red_lists:=function(Q,p,N,r,W0,Winf,G0,Ginf,e0,einf,J0,Jinf,T0,Tinf,T0inv,Tinfin
     
     ri:=Qx!(fac[i][1]);
     ri:=reduce_mod_pN_Qx(ri,p,Nw); 
-    riseq:=Append(riseq,ri);
+    Append(~riseq,ri);
     if Degree(ri) gt 1 then
       Qi:=ext<RationalField()|ri>; // redefining Qi, same mod p^Nw  
       s:=Qi.1;
@@ -305,9 +305,9 @@ red_lists:=function(Q,p,N,r,W0,Winf,G0,Ginf,e0,einf,J0,Jinf,T0,Tinf,T0inv,Tinfin
       mat:=reduce_mod_pN_Qi_mat(mat,p,Nw);
       mat:=denominv*mat;
       mat:=reduce_mod_pN_Qi_mat(mat,p,Nw);
-      redlistfinQi:=Append(redlistfinQi,mat);
+      Append(~redlistfinQi,mat);
     end for;
-    redlistfinfac:=Append(redlistfinfac,redlistfinQi);
+    Append(~redlistfinfac,redlistfinQi);
   end for;
 
   rQ0:=reduce_mod_pN_Qx(rQ,p,Nw);
@@ -322,7 +322,7 @@ red_lists:=function(Q,p,N,r,W0,Winf,G0,Ginf,e0,einf,J0,Jinf,T0,Tinf,T0inv,Tinfin
         fiseq[k]:=Qx!0;
       end if;   
     end for;
-    L:=Append(L,reduce_mod_pN_Qx(ChineseRemainderTheorem(fiseq,riseq),p,Nw));
+    Append(~L,reduce_mod_pN_Qx(ChineseRemainderTheorem(fiseq,riseq),p,Nw));
   end for;
 
   redlistfin:=[];
@@ -337,7 +337,7 @@ red_lists:=function(Q,p,N,r,W0,Winf,G0,Ginf,e0,einf,J0,Jinf,T0,Tinf,T0inv,Tinfin
         mat[i,j]:=reduce_mod_pN_Qx(entry,p,Nw);
       end for;
     end for;
-    redlistfin:=Append(redlistfin,mat);
+    Append(~redlistfin,mat);
   end for;
 
   // Infinite reduction matrices
@@ -353,7 +353,7 @@ red_lists:=function(Q,p,N,r,W0,Winf,G0,Ginf,e0,einf,J0,Jinf,T0,Tinf,T0inv,Tinfin
     D:=D-IdentityMatrix(RationalField(),d);
     mat:=Pinv*D^(-1)*P;
     mat:=reduce_mod_pN_Q_mat(mat,p,Nw);
-    redlistinf:=Append(redlistinf,mat);
+    Append(~redlistinf,mat);
   end for;
 
   return redlistfin,redlistinf;
@@ -374,7 +374,7 @@ convert_to_Qxzzinvd:=function(w,Q);
     D,val:=Coefficients(w[i]);
     E:=[];
     for j:=1 to #D do
-      E[j]:=(Zx!D[j]);  
+      E[j]:=(PolynomialRing(IntegerRing())!D[j]);  
     end for;
     C[i]:=z^(-1)*(Qxz.1)^(val+1)*(Qxz!E); 
   end for;
@@ -443,7 +443,7 @@ coho_red_fin:=function(w,Q,p,N,r,W0,Winf,G0,redlistfin);
     for j:=-l0 to 0 do
       vec[j+l0+1]:=Coefficient(w[i],j);  
     end for;
-    wcoefs:=Append(wcoefs,vec);
+    Append(~wcoefs,vec);
   end for;
 
   l:=l0;
@@ -601,8 +601,8 @@ coho_red_inf:=function(w,Q,p,N,r,W0,Winf,Ginf,red_list_inf);
   deglist:=[0];
   for i:=1 to d do
     if w[i] ne 0 then
-      vallist:=Append(vallist,Valuation(w[i]));
-      deglist:=Append(deglist,Degree(w[i]));
+      Append(~vallist,Valuation(w[i]));
+      Append(~deglist,Degree(w[i]));
     end if;
   end for;
 
@@ -615,7 +615,7 @@ coho_red_inf:=function(w,Q,p,N,r,W0,Winf,Ginf,red_list_inf);
     for j:=valw to degw do
       vec[j-valw+1]:=Coefficient(w[i],j);  
     end for;
-    wcoefs:=Append(wcoefs,vec);
+    Append(~wcoefs,vec);
   end for;
 
   m0:=-valw-degr+1;

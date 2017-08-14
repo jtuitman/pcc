@@ -72,7 +72,7 @@ ord_r:=function(f,r)
       f:=f*fac[i][1];
       v:=v-1;
     end while;
-    vlist:=Append(vlist,v);
+    Append(~vlist,v);
   end for; 
   min:=Minimum(vlist);
   return min;
@@ -99,17 +99,11 @@ Zax_to_Kx:=function(f,Kx);
 
   // Convert from Zax to Kx.
  
-  fK:=Kx!0;
+  Zax:=Parent(f); Za:=BaseRing(Zax);
   K:=BaseRing(Kx);
-  n:=Degree(K);
-  C:=Coefficients(f);
-  for i:=1 to #C do
-    D:=Coefficients(C[i]);
-    while #D lt n do
-      D:=Append(D,0);
-    end while;
-    fK:=fK+(BaseRing(Kx)!D)*(Kx.1)^(i-1);
-  end for;
+  phi:=hom<Za->K|K.1>; phi:=hom<Zax->Kx|phi,Kx.1>;
+  fK:=phi(f);
+  
   return fK;
 end function;
 
@@ -373,7 +367,7 @@ basis_kernel_mod_pN:=function(A,p,n,m,N)
   S,P1,P2:=SmithForm(matpN);
   b:=[];
   for i:=Rank(S)+1 to row do
-    b:=Append(b,P1[i]);
+    Append(~b,P1[i]);
   end for;
   if #b gt 0 then
     b:=RowSequence(HermiteForm(Matrix(b)));
@@ -381,14 +375,14 @@ basis_kernel_mod_pN:=function(A,p,n,m,N)
 
   // Push the basis back into the number field K
 
-  K:=BaseRing(A); //
+  K:=BaseRing(A);
   bnew:=[];
   for i:=1 to #b do
     v:=[];
     for j:=1 to #(b[i]) do
       v[j]:=K!Eltseq(b[i][j]);
     end for;
-    bnew:=Append(bnew,v);
+    Append(~bnew,v);
   end for;
   b:=bnew;
 
@@ -446,7 +440,7 @@ basis_kernel_mod_pN_Ki:=function(A,p,n,m,N)
         w[j]:=w[j]+(v[(j-1)*degKi+k])*Ki.1^(k-1); 
       end for;
     end for;
-    bKi:=Append(bKi,w);
+    Append(~bKi,w);
   end for;
 
   return bKi;
@@ -583,14 +577,14 @@ fin_ram_ind:=function(r,G0,Kx)
       Ki<s>:=ext<K|fac[i][1]>; 
     end if;
     resG0:=Evaluate(M0,s)/Evaluate(Derivative(rK),s);
-    resG0list:=Append(resG0list,resG0);
+    Append(~resG0list,resG0);
     for j:=1 to d do                                          
       if Determinant(resG0-(1/j)*IdentityMatrix(Ki,d)) eq 0 then 
-        e0listi:=Append(e0listi,j);   
+        Append(~e0listi,j);   
         e0:=Maximum(e0,j);                          
       end if;                                                 
     end for;
-    e0list:=Append(e0list,e0listi);                                                 
+    Append(~e0list,e0listi);                                                 
   end for;
 
   return e0,e0list,resG0list;
@@ -608,7 +602,7 @@ inf_ram_ind:=function(Ginf,Kx)
   einflist:=[];
   for j:=1 to d do
     if Determinant(resGinf-(1/j)*IdentityMatrix(K,d)) eq 0 then
-      einflist:=Append(einflist,j);
+      Append(~einflist,j);
     end if;
   end for;
   if #einflist eq 0 then
@@ -664,15 +658,15 @@ jordan_0:=function(p,n,m,N,r,e0list,resG0list,Kx,exactcoho)
         b:=b cat b1;
       end for;
     end for;
-    J0:=Append(J0,J0i);
-    T0:=Append(T0,Matrix(b));
+    Append(~J0,J0i);
+    Append(~T0,Matrix(b));
     if exactcoho then
-      T0inv:=Append(T0inv,T0[i]^(-1));
+      Append(~T0inv,T0[i]^(-1));
     else 
       if Degree(fac[i][1]) eq 1 then
-        T0inv:=Append(T0inv,invert_matrix_mod_pN(T0[i],p,n,m,3*N));
+        Append(~T0inv,invert_matrix_mod_pN(T0[i],p,n,m,3*N));
       else
-        T0inv:=Append(T0inv,invert_matrix_mod_pN_Ki(T0[i],p,n,m,3*N));
+        Append(~T0inv,invert_matrix_mod_pN_Ki(T0[i],p,n,m,3*N));
       end if;
     end if;
   end for;
@@ -812,7 +806,7 @@ res_inf:=function(w,QK,rK,W0,Winf,Ginf,Jinf,Tinfinv,Kxy)
   res:=[];
   for i:=1 to d do
     if Jinf[i,i] eq 0 then
-      res:=Append(res,v[i]);
+      Append(~res,v[i]);
     end if;
   end for;
   
@@ -847,7 +841,7 @@ basis_coho:=function(Q,p,n,m,N,r,W0,Winf,G0,Ginf,J0,Jinf,T0inv,Tinfinv,Kxy,exact
   basisE0:=[];
   for i:=0 to d-1  do 
     for j:=0 to deg_bound_E0 do
-      basisE0:=Append(basisE0,[i,j]);
+      Append(~basisE0,[i,j]);
     end for;
   end for;
   dimE0:=#basisE0;
@@ -907,7 +901,7 @@ basis_coho:=function(Q,p,n,m,N,r,W0,Winf,G0,Ginf,J0,Jinf,T0inv,Tinfinv,Kxy,exact
     while b0[i][j] eq 0 do
       j:=j+1;
     end while;
-    pivotsb0:=Append(pivotsb0,j);
+    Append(~pivotsb0,j);
   end for;
 
   matb0:=IdentityMatrix(K,dimE0);
@@ -934,7 +928,7 @@ basis_coho:=function(Q,p,n,m,N,r,W0,Winf,G0,Ginf,J0,Jinf,T0inv,Tinfinv,Kxy,exact
   basisB0:=[];
   for i:=0 to d-1  do 
     for j:=0 to deg_bound_B0 do
-      basisB0:=Append(basisB0,[i,j]);
+      Append(~basisB0,[i,j]);
     end for;
   end for;
   dimB0:=#basisB0;
@@ -974,7 +968,7 @@ basis_coho:=function(Q,p,n,m,N,r,W0,Winf,G0,Ginf,J0,Jinf,T0inv,Tinfinv,Kxy,exact
       power_y:=basisE0[j][1];
       coefs[j]:=Coefficient(vecKxd[power_y+1],power_x);  
     end for;
-    list:=Append(list,(E0!coefs)*matb0inv);
+    Append(~list,(E0!coefs)*matb0inv);
   end for;
 
   // Compute H1(X-x^(-1)(infty))
@@ -1031,7 +1025,7 @@ basis_coho:=function(Q,p,n,m,N,r,W0,Winf,G0,Ginf,J0,Jinf,T0inv,Tinfinv,Kxy,exact
     while b2[i][j] eq 0 do
       j:=j+1;
     end while;
-    pivotsb2:=Append(pivotsb2,j);
+    Append(~pivotsb2,j);
   end for;
   
   matb2:=IdentityMatrix(K,dimH1Xminusinfty);
@@ -1062,7 +1056,7 @@ basis_coho:=function(Q,p,n,m,N,r,W0,Winf,G0,Ginf,J0,Jinf,T0inv,Tinfinv,Kxy,exact
     for j:=1 to dimE0nEinfnkerres0 do
       w:=w+v[j]*(E0!b0[pivotsb0[j]]);
     end for;
-    b:=Append(b,w);
+    Append(~b,w);
   end for;
 
   // finding a common denominator for the elements of b
@@ -1089,7 +1083,7 @@ basis_coho:=function(Q,p,n,m,N,r,W0,Winf,G0,Ginf,J0,Jinf,T0inv,Tinfinv,Kxy,exact
     for j:=1 to dimE0 do
       vec[basisE0[j][1]+1]:=vec[basisE0[j][1]+1]+(Za!Eltseq(b[i][j]))*(Zax.1)^(basisE0[j][2]);
     end for;
-    basis:=Append(basis,vec);
+    Append(~basis,vec);
   end for;
 
   return basis,quo_map;

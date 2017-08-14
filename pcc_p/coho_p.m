@@ -50,7 +50,7 @@ ord_r:=function(f,r)
       f:=f*fac[i][1];
       v:=v-1;
     end while;
-    vlist:=Append(vlist,v);
+    Append(~vlist,v);
   end for; 
   min:=Minimum(vlist);
   return min;
@@ -257,7 +257,7 @@ ram:=function(J0,Jinf)
   e_list:=[];
   for i:=1 to #J0 do
     for j:=1 to d do
-      e_list:=Append(e_list,Denominator(RationalField()!J0[i][j,j]));
+      Append(~e_list,Denominator(RationalField()!J0[i][j,j]));
     end for;
   end for;
   if #e_list gt 0 then
@@ -268,7 +268,7 @@ ram:=function(J0,Jinf)
   
   e_list:=[];
   for i:=1 to d do
-    e_list:=Append(e_list,Denominator(RationalField()!Jinf[i,i]));
+    Append(~e_list,Denominator(RationalField()!Jinf[i,i]));
   end for;
   e_inf:=Maximum(e_list);
 
@@ -336,9 +336,9 @@ jordan_0:=function(r,G0)
     end if;
     res_G0:=Evaluate(G0*r/Derivative(r),s);
     J,T:=JordanForm(res_G0);
-    J0:=Append(J0,J);
-    T0:=Append(T0,T);
-    T0inv:=Append(T0inv,T^(-1));
+    Append(~J0,J);
+    Append(~T0,T);
+    Append(~T0inv,T^(-1));
   end for;
   return J0,T0,T0inv;
 end function;
@@ -366,7 +366,7 @@ basis_kernel_mod_pN:=function(A,p,N)
  
   b:=[];
   for i:=Rank(S)+1 to row do
-    b:=Append(b,P1[i]);
+    Append(~b,P1[i]);
   end for;
   if #b gt 0 then
     b:=RowSequence(HermiteForm(Matrix(b)));
@@ -462,7 +462,7 @@ res_inf:=function(w,Q,r,W0,Winf,Ginf,Jinf,Tinfinv)
   res_list:=[];
   for i:=1 to d do
     if Jinf[i,i] eq 0 then
-      res_list:=Append(res_list,v[i]);
+      Append(~res_list,v[i]);
     end if;
   end for;
 
@@ -494,7 +494,7 @@ basis_coho:=function(Q,p,N,r,W0,Winf,G0,Ginf,J0,Jinf,T0inv,Tinfinv,exactcoho)
   basisE0:=[];
   for i:=0 to d-1  do 
     for j:=0 to deg_bound_E0 do
-      basisE0:=Append(basisE0,[i,j]);
+      Append(~basisE0,[i,j]);
     end for;
   end for;
   dimE0:=#basisE0;
@@ -553,7 +553,7 @@ basis_coho:=function(Q,p,N,r,W0,Winf,G0,Ginf,J0,Jinf,T0inv,Tinfinv,exactcoho)
     while b0[i][j] eq 0 do
       j:=j+1;
     end while;
-    pivotsb0:=Append(pivotsb0,j);
+    Append(~pivotsb0,j);
   end for;
 
   matb0:=IdentityMatrix(RationalField(),dimE0);
@@ -580,7 +580,7 @@ basis_coho:=function(Q,p,N,r,W0,Winf,G0,Ginf,J0,Jinf,T0inv,Tinfinv,exactcoho)
   basisB0:=[];
   for i:=0 to d-1  do 
     for j:=0 to deg_bound_B0 do
-      basisB0:=Append(basisB0,[i,j]);
+      Append(~basisB0,[i,j]);
     end for;
   end for;
   dimB0:=#basisB0;
@@ -618,7 +618,7 @@ basis_coho:=function(Q,p,N,r,W0,Winf,G0,Ginf,J0,Jinf,T0inv,Tinfinv,exactcoho)
       power_y:=basisE0[j][1];
       coefs[j]:=Coefficient(vecQxd[power_y+1],power_x);  
     end for;
-    list:=Append(list,(E0!coefs)*matb0inv);
+    Append(~list,(E0!coefs)*matb0inv);
   end for;
 
   // Compute H1(X-x^(-1)(infty))
@@ -675,7 +675,7 @@ basis_coho:=function(Q,p,N,r,W0,Winf,G0,Ginf,J0,Jinf,T0inv,Tinfinv,exactcoho)
     while b2[i][j] eq 0 do
       j:=j+1;
     end while;
-    pivotsb2:=Append(pivotsb2,j);
+    Append(~pivotsb2,j);
   end for;
   
   matb2:=IdentityMatrix(RationalField(),dimH1Xminusinfty);
@@ -706,7 +706,7 @@ basis_coho:=function(Q,p,N,r,W0,Winf,G0,Ginf,J0,Jinf,T0inv,Tinfinv,exactcoho)
     for j:=1 to dimE0nEinfnkerres0 do
       w:=w+v[j]*(E0!b0[pivotsb0[j]]);
     end for;
-    b:=Append(b,w);
+    Append(~b,w);
   end for;
 
   // finding a common denominator for the elements of b
@@ -733,7 +733,7 @@ basis_coho:=function(Q,p,N,r,W0,Winf,G0,Ginf,J0,Jinf,T0inv,Tinfinv,exactcoho)
     for j:=1 to dimE0 do
       vec[basisE0[j][1]+1]:=vec[basisE0[j][1]+1]+(Z!(b[i][j]))*x^(basisE0[j][2]);
     end for;
-    basis:=Append(basis,vec);
+    Append(~basis,vec);
   end for;
 
   return basis,quomap;
