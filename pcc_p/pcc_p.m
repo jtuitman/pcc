@@ -50,7 +50,7 @@ num_zeta:=function(Q,p: N:=0, verbose:=false, exactcoho:=false, W0:=0, Winf:=0);
   W0inv:=W0^(-1); 
   Winfinv:=Winf^(-1); 
 
-  if (Degree(r) lt 1) or (not smooth(r,p)) or (not (is_integral(W0,p) and is_integral(W0inv,p) and is_integral(Winf,p) and is_integral(Winfinv,p))) then
+  if (LeadingCoefficient(Delta) mod p eq 0) or (Degree(r) lt 1) or (not smooth(r,p)) or (not (is_integral(W0,p) and is_integral(W0inv,p) and is_integral(Winf,p) and is_integral(Winfinv,p))) then
     error "Bad model for curve";
   end if;
 

@@ -178,6 +178,7 @@ froblift:=function(Q,p,N,r,Delta,s,W0);
   xp:=pow(R!x,p,Q,r);	
 
   for i:=1 to #prec do
+
     Oi,Oxi,Si,Ri:=getrings(p,prec[i]);
     xpi:=Ri!xp;				
     rxp:=xpforx(Ri!(Oxi!r),xpi,r);
