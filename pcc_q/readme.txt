@@ -4,17 +4,17 @@
 // copyright (c) 2017 Jan Tuitman               //
 //////////////////////////////////////////////////
 
-This is the pcc_q (Point Counting on Curves) MAGMA library v2.16 for computing zeta functions of curves over finite (non-prime) fields.
+This is the pcc_q (Point Counting on Curves) MAGMA library v2.17 for computing zeta functions of curves over finite (non-prime) fields.
 
 The code is based on the algorithm presented in my papers:
 
-"Counting points on curves using a map to P^1",      http://arxiv.org/abs/1402.6758
-"Counting points on curves using a map to P^1, II" , http://arxiv.org/abs/1412.7217
+Counting points on curves using a map to P^1, II, Finite Fields and their Applications 45 (2017), 301--322.
+Counting points on curves using a map to P^1, Mathematics of Computation 85 (2016), no. 298, 961--981.
 
 Jan Tuitman
 jan.tuitman@wis.kuleuven.be
 
-February 2017.
+November 2017.
 
 GETTING STARTED
 ---------------
