@@ -6,7 +6,7 @@
 
 print "";
 print "*****************************";
-print "* pcc_p Magma library v2.16 *";
+print "* pcc_p Magma library v2.17 *";
 print "*                           *";
 print "* by Jan Tuitman            *";
 print "*****************************";
