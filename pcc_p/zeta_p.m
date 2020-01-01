@@ -17,13 +17,13 @@ provable_prec:=function(Q,p,g,W0,Winf,e0,einf:val:=0);
   for i:=1 to g do
     Append(~prec_list,Floor(log(p,(4*g/i)*p^(i/2)))+1);
   end for;
-  N_chi:=Maximum(prec_list);
+  N_chi:=Maximum(prec_list); // p-adic precision to which charpoly of Frobenius has to be correct to recover it exactly
   
-  delta:=Floor(log(p,-(ord_0_mat(W)+1)*einf))+Floor(log(p,(Floor((2*g-2)/d)+1)*einf));
-  N_F:=N_chi+delta-val;
+  delta:=Floor(log(p,-(ord_0_mat(W)+1)*einf))+Floor(log(p,(Floor((2*g-2)/d)+1)*einf))-val; // max p-adic valuation denominator Frobenius matrix
+  N_F:=N_chi+delta-val; // required precision for (cohomologically reduced) images of basis vectors under Frobenius
 
-  N:=N_F+Floor(log(p,-p*(ord_0_mat(W)+1)*einf));
-  while (N-Floor(log(p,p*(N-1)*e0))-Floor(log(p,-(ord_inf_mat(W^(-1))+1)*einf)) lt N_F) do
+  N:=N_F+Floor(log(p,-p*(ord_0_mat(W)+1)*einf)); 
+  while (N-Floor(log(p,p*(N-1)*e0))-Floor(log(p,-(ord_inf_mat(W^(-1))+1)*einf)) lt N_F) do // account for precision loss in cohomological reductions
     N:=N+1;
   end while;
 

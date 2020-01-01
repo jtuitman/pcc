@@ -1,10 +1,10 @@
 ////////////////////////////////////////////////// 
 // This code is part of the pcc_p MAGMA library //
 //                                              //
-// copyright (c) 2017 Jan Tuitman               //
+// copyright (c) 2019 Jan Tuitman               //
 //////////////////////////////////////////////////
 
-This is the pcc_p (Point Counting on Curves) MAGMA library v2.17 for computing zeta functions of curves over finite (prime) fields.
+This is the pcc_p (Point Counting on Curves) MAGMA library v2.18 for computing zeta functions of curves over finite (prime) fields.
 
 The code is based on the algorithm presented in my papers:
 
@@ -14,7 +14,7 @@ Counting points on curves using a map to P^1, Mathematics of Computation 85 (201
 Jan Tuitman
 jan.tuitman@wis.kuleuven.be
 
-November 2017
+December 2019
 
 GETTING STARTED
 ---------------
